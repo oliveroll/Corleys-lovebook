@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Corley ❤️ Oliver</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="topbar">
+    <div class="brand">Corley ❤️ Oliver</div>
+    <nav class="nav">
+      <button class="navBtn" data-go="cover">Cover</button>
+      <button class="navBtn" data-go="intro">Intro</button>
+      <button class="navBtn" data-go="chapters">Chapters</button>
+      <button class="navBtn" data-go="gallery">Gallery</button>
+      <button class="navBtn" data-go="final">Final</button>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- COVER -->
+    <section id="cover" class="panel active">
+      <div class="card hero">
+        <div class="heroLeft">
+          <h1>Happy Valentine’s Day, Corley ❤️</h1>
+          <p class="sub">
+            I made you a little love book. Offline. Just for you.
+          </p>
+          <div class="actions">
+            <button class="primary" data-next="intro">Open the book →</button>
+            <button class="ghost" id="confettiBtn">tiny confetti ✨</button>
+          </div>
+          <p class="hint">Tip: click the timeline + notes in Chapters.</p>
+        </div>
+        <div class="heroRight">
+          <img class="coverImg" src="photos/cover.jpg" alt="Cover photo">
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section id="intro" class="panel">
+      <div class="card">
+        <h2>Introduction</h2>
+        <p class="letter" id="introLetter"></p>
+        <div class="actions">
+          <button class="ghost" data-prev="cover">← Back</button>
+          <button class="primary" data-next="chapters">Chapter 1 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAPTERS -->
+    <section id="chapters" class="panel">
+      <div class="grid2">
+        <div class="card">
+          <h2>Chapters</h2>
+
+          <div class="chapter">
+            <h3>Chapter 1: Us</h3>
+            <p id="chapterUs"></p>
+          </div>
+
+          <div class="chapter">
+            <h3>Chapter 2: Peru Soon 🇵🇪</h3>
+            <p id="chapterPeru"></p>
+          </div>
+
+          <div class="chapter">
+            <h3>Chapter 3: What I love about you</h3>
+            <ul class="list" id="loveList"></ul>
+          </div>
+
+          <div class="actions">
+            <button class="ghost" data-prev="intro">← Back</button>
+            <button class="primary" data-next="gallery">Go to Gallery →</button>
+          </div>
+        </div>
+
+        <!-- WOW FEATURE: TIMELINE + LOVE NOTES REVEAL -->
+        <div class="card">
+          <h2>Timeline</h2>
+          <p class="muted">Tap each moment.</p>
+          <div class="timeline" id="timeline"></div>
+
+          <h2 style="margin-top:18px;">Love Notes</h2>
+          <p class="muted">Tap to reveal.</p>
+          <div class="notes" id="notes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="panel">
+      <div class="card">
+        <div class="galleryHeader">
+          <h2>Gallery</h2>
+          <p class="muted">Click a photo for slideshow.</p>
+        </div>
+        <div class="photoGrid" id="photoGrid"></div>
+
+        <div class="actions">
+          <button class="ghost" data-prev="chapters">← Back</button>
+          <button class="primary" data-next="final">Final page →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL -->
+    <section id="final" class="panel">
+      <div class="card finalCard">
+        <h2>One last thing…</h2>
+        <p class="big">Will you be my Valentine? ❤️</p>
+
+        <button class="primary" id="revealBtn">Reveal message</button>
+
+        <div class="revealBox" id="revealBox" aria-hidden="true">
+          <p id="finalMessage"></p>
+          <p class="small muted">P.S. This stays on your USB forever :)</p>
+        </div>
+
+        <div class="actions">
+          <button class="ghost" data-prev="gallery">← Back</button>
+          <button class="ghost" id="restartBtn">Restart ↺</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX / SLIDESHOW -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightboxInner">
+      <button class="lbClose" id="lbClose">✕</button>
+      <button class="lbNav" id="lbPrev">‹</button>
+      <img id="lbImg" alt="Slideshow image"/>
+      <button class="lbNav" id="lbNext">›</button>
+      <div class="lbCaption" id="lbCaption"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
