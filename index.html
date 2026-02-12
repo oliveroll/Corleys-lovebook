@@ -8,33 +8,45 @@
 </head>
 <body>
   <div class="bg"></div>
+  <canvas id="particleCanvas" aria-hidden="true"></canvas>
 
   <header class="topbar">
     <div class="brand">Corley ❤️ Oliver</div>
-    <nav class="nav">
-      <button class="navBtn" data-go="cover">Cover</button>
-      <button class="navBtn" data-go="intro">Intro</button>
-      <button class="navBtn" data-go="chapters">Chapters</button>
-      <button class="navBtn" data-go="gallery">Gallery</button>
-      <button class="navBtn" data-go="final">Final</button>
-    </nav>
+    <div class="topbarRight">
+      <!-- Music controls -->
+      <div class="musicControls" role="group" aria-label="Music controls">
+        <button class="tinyBtn" id="musicToggle" aria-label="Play music" aria-pressed="false" title="Play music">&#9654;</button>
+        <input type="range" id="volumeSlider" class="volumeSlider" min="0" max="1" step="0.05" value="0.35" aria-label="Volume" title="Volume"/>
+        <button class="tinyBtn" id="muteToggle" aria-label="Mute" aria-pressed="false" title="Mute">&#9835;</button>
+      </div>
+      <!-- Theme toggle -->
+      <button class="tinyBtn" id="themeToggle" aria-label="Switch to minimal theme" title="Switch theme">&#127769;</button>
+      <!-- Page navigation -->
+      <nav class="nav" aria-label="Page navigation">
+        <button class="navBtn navActive" data-go="cover">Cover</button>
+        <button class="navBtn" data-go="intro">Intro</button>
+        <button class="navBtn" data-go="chapters">Chapters</button>
+        <button class="navBtn" data-go="gallery">Gallery</button>
+        <button class="navBtn" data-go="final">Final</button>
+      </nav>
+    </div>
   </header>
 
   <main class="container">
 
     <!-- COVER -->
-    <section id="cover" class="panel active">
+    <section id="cover" class="panel active panel-visible" aria-label="Cover page">
       <div class="card hero">
         <div class="heroLeft">
-          <h1>Happy Valentine’s Day, Corley ❤️</h1>
+          <h1>Happy Valentine's Day, Corley ❤️</h1>
           <p class="sub">
             I made you a little love book. Offline. Just for you.
           </p>
           <div class="actions">
-            <button class="primary" data-next="intro">Open the book →</button>
-            <button class="ghost" id="confettiBtn">tiny confetti ✨</button>
+            <button class="primary" data-next="intro">Open the book &rarr;</button>
+            <button class="ghost" id="confettiBtn">tiny confetti &#10024;</button>
           </div>
-          <p class="hint">Tip: click the timeline + notes in Chapters.</p>
+          <p class="hint">Tip: journey through our story in Chapters!</p>
         </div>
         <div class="heroRight">
           <img class="coverImg" src="photos/cover.jpg" alt="Cover photo">
@@ -43,59 +55,52 @@
     </section>
 
     <!-- INTRO -->
-    <section id="intro" class="panel">
+    <section id="intro" class="panel" aria-label="Introduction">
       <div class="card">
         <h2>Introduction</h2>
         <p class="letter" id="introLetter"></p>
         <div class="actions">
-          <button class="ghost" data-prev="cover">← Back</button>
-          <button class="primary" data-next="chapters">Chapter 1 →</button>
+          <button class="ghost" data-prev="cover">&larr; Back</button>
+          <button class="primary" data-next="chapters">Chapter 1 &rarr;</button>
         </div>
       </div>
     </section>
 
     <!-- CHAPTERS -->
-    <section id="chapters" class="panel">
-      <div class="grid2">
-        <div class="card">
-          <h2>Chapters</h2>
-
-          <div class="chapter">
-            <h3>Chapter 1: Us</h3>
-            <p id="chapterUs"></p>
-          </div>
-
-          <div class="chapter">
-            <h3>Chapter 2: Peru Soon 🇵🇪</h3>
-            <p id="chapterPeru"></p>
-          </div>
-
-          <div class="chapter">
-            <h3>Chapter 3: What I love about you</h3>
-            <ul class="list" id="loveList"></ul>
-          </div>
-
-          <div class="actions">
-            <button class="ghost" data-prev="intro">← Back</button>
-            <button class="primary" data-next="gallery">Go to Gallery →</button>
+    <section id="chapters" class="panel" aria-label="Chapters">
+      <!-- LOVE MAP GAME - TWO COLUMN LAYOUT -->
+      <div class="gameContainer">
+        <!-- LEFT: CHAPTER SELECTION -->
+        <div class="card chapterSelectionCard">
+          <h2>Our 2025 Story</h2>
+          <p class="muted">4 Chapters. One Journey.</p>
+          <div class="chaptersList" id="chaptersList"></div>
+          <div class="gameNavActions">
+            <button class="ghost" data-prev="intro">&larr; Back</button>
+            <button class="primary" data-next="gallery">Gallery &rarr;</button>
           </div>
         </div>
 
-        <!-- WOW FEATURE: TIMELINE + LOVE NOTES REVEAL -->
-        <div class="card">
-          <h2>Timeline</h2>
-          <p class="muted">Tap each moment.</p>
-          <div class="timeline" id="timeline"></div>
+        <!-- RIGHT: ACTIVE GAME MAP -->
+        <div class="card gameCard" id="gameCard" aria-label="Love Map Game">
+          <div class="gameMapHeader" id="gameMapHeader">
+            <h3 id="activeChapterTitle">Select a chapter to begin</h3>
+          </div>
 
-          <h2 style="margin-top:18px;">Love Notes</h2>
-          <p class="muted">Tap to reveal.</p>
-          <div class="notes" id="notes"></div>
+          <!-- Animated path map -->
+          <div class="gameMap" id="gameMap" aria-hidden="true"></div>
+
+          <!-- Question area -->
+          <div class="gameQuestion" id="gameQuestion"></div>
+
+          <!-- Result area (hidden until game ends) -->
+          <div class="gameResult" id="gameResult" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
     <!-- GALLERY -->
-    <section id="gallery" class="panel">
+    <section id="gallery" class="panel" aria-label="Photo gallery">
       <div class="card">
         <div class="galleryHeader">
           <h2>Gallery</h2>
@@ -104,16 +109,16 @@
         <div class="photoGrid" id="photoGrid"></div>
 
         <div class="actions">
-          <button class="ghost" data-prev="chapters">← Back</button>
-          <button class="primary" data-next="final">Final page →</button>
+          <button class="ghost" data-prev="chapters">&larr; Back</button>
+          <button class="primary" data-next="final">Final page &rarr;</button>
         </div>
       </div>
     </section>
 
     <!-- FINAL -->
-    <section id="final" class="panel">
+    <section id="final" class="panel" aria-label="Final message">
       <div class="card finalCard">
-        <h2>One last thing…</h2>
+        <h2>One last thing&hellip;</h2>
         <p class="big">Will you be my Valentine? ❤️</p>
 
         <button class="primary" id="revealBtn">Reveal message</button>
@@ -124,8 +129,8 @@
         </div>
 
         <div class="actions">
-          <button class="ghost" data-prev="gallery">← Back</button>
-          <button class="ghost" id="restartBtn">Restart ↺</button>
+          <button class="ghost" data-prev="gallery">&larr; Back</button>
+          <button class="ghost" id="restartBtn">Restart &#8634;</button>
         </div>
       </div>
     </section>
@@ -133,16 +138,16 @@
   </main>
 
   <!-- LIGHTBOX / SLIDESHOW -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo slideshow" aria-hidden="true">
     <div class="lightboxInner">
-      <button class="lbClose" id="lbClose">✕</button>
-      <button class="lbNav" id="lbPrev">‹</button>
+      <button class="lbClose" id="lbClose" aria-label="Close slideshow">&#10005;</button>
+      <button class="lbNav" id="lbPrev" aria-label="Previous photo">&#8249;</button>
       <img id="lbImg" alt="Slideshow image"/>
-      <button class="lbNav" id="lbNext">›</button>
-      <div class="lbCaption" id="lbCaption"></div>
+      <button class="lbNav" id="lbNext" aria-label="Next photo">&#8250;</button>
+      <div class="lbCaption" id="lbCaption" aria-live="polite"></div>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>
