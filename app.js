@@ -1494,7 +1494,7 @@ function tick() {
  *  - Autoplay is OFF. The user must click Play first
  *    (required by iOS / Safari policy).
  * ================================================ */
-const audio = new Audio("music/Hey Lady.mp3");
+const audio = new Audio("music/hey-lady.mp3");
 audio.loop    = true;
 audio.volume  = parseFloat(localStorage.getItem("lbVolume") || "0.35");
 audio.preload = "auto";
