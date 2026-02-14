@@ -258,6 +258,7 @@ Happy Valentine's Day ❤️`,
  * ================================================ */
 const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const PANEL_ORDER = ["cover", "intro", "chapters", "gallery", "final"];
+const cacheBust = "?v=7";
 
 /* ================================================
  *  DOM References
@@ -309,6 +310,11 @@ function showPanel(id) {
 
   transitioning = true;
   updateNavHighlight(id);
+  
+  // Stop slideshows when leaving chapters panel
+  if (current && current.id === "chapters" && id !== "chapters") {
+    stopFloatingSlideshows();
+  }
 
   if (current) {
     let cleaned = false;
@@ -390,12 +396,16 @@ const gameQuestionEl  = document.getElementById("gameQuestion");
 const gameResultEl    = document.getElementById("gameResult");
 const chaptersListEl  = document.getElementById("chaptersList");
 const activeChapterTitleEl = document.getElementById("activeChapterTitle");
+const floatingSlideshowsEl = document.getElementById("floatingSlideshows");
+const slideshowsContainer = document.getElementById("slideshowsContainer");
 
 let activeChapterId = null;
 let completedChapters = JSON.parse(localStorage.getItem("lbCompletedChapters") || "[]");
 let currentNodeIndex = 0;
 let nodeStates = [];
 let showingMemory = true;
+let activeSlideshows = [];
+let slideshowInterval = null;
 
 function initGame() {
   console.log("Initializing game...");
@@ -484,6 +494,9 @@ function loadChapter(chapterId) {
   
   renderChapterCards();
   
+  // Start floating slideshows
+  startFloatingSlideshows();
+  
   if (nodes.length > 0) {
     console.log("Rendering map and showing intro for node 0");
     renderGameMap();
@@ -499,53 +512,245 @@ function loadChapter(chapterId) {
   }
 }
 
-/** Build the SVG path with story nodes */
+/* ================================================
+ *  Floating Slideshows
+ * ================================================ */
+function startFloatingSlideshows() {
+  // Clear existing slideshows
+  stopFloatingSlideshows();
+  
+  if (!slideshowsContainer) return;
+  
+  // Create first slideshow after a short delay
+  setTimeout(() => createMiniSlideshow(), 1000);
+  
+  // Create new small slideshows every 5-8 seconds
+  slideshowInterval = setInterval(() => {
+    if (activeSlideshows.length < 6) {
+      createMiniSlideshow();
+    }
+  }, 5000 + Math.random() * 3000);
+}
+
+function stopFloatingSlideshows() {
+  if (slideshowInterval) {
+    clearInterval(slideshowInterval);
+    slideshowInterval = null;
+  }
+  
+  // Clear all intervals and remove elements
+  activeSlideshows.forEach(s => {
+    if (s.cycleInterval) clearInterval(s.cycleInterval);
+    if (s.element && s.element.parentNode) {
+      s.element.remove();
+    }
+  });
+  activeSlideshows = [];
+  
+  if (slideshowsContainer) {
+    slideshowsContainer.innerHTML = "";
+  }
+}
+
+function createMiniSlideshow() {
+  if (!slideshowsContainer || activeSlideshows.length >= 6) return;
+  
+  // Pick 3-4 random photos for this mini slideshow
+  const photoCount = 3 + Math.floor(Math.random() * 2);
+  const selectedPhotos = [];
+  const usedIndices = new Set();
+  
+  while (selectedPhotos.length < photoCount && selectedPhotos.length < CONTENT.photos.length) {
+    const idx = Math.floor(Math.random() * CONTENT.photos.length);
+    if (!usedIndices.has(idx)) {
+      usedIndices.add(idx);
+      selectedPhotos.push(CONTENT.photos[idx]);
+    }
+  }
+  
+  if (selectedPhotos.length === 0) return;
+  
+  // Create slideshow element
+  const slideshow = document.createElement("div");
+  slideshow.className = "slideshow";
+  
+  // Random side (left or right)
+  const fromLeft = Math.random() > 0.5;
+  
+  // Random vertical position (avoid overlapping too much)
+  const usedPositions = activeSlideshows.map(s => {
+    const top = parseInt(s.element.style.top) || 0;
+    return top;
+  });
+  
+  let topPosition;
+  let attempts = 0;
+  do {
+    topPosition = 10 + Math.floor(Math.random() * 70); // 10% to 80% from top
+    attempts++;
+  } while (attempts < 10 && usedPositions.some(pos => Math.abs(pos - topPosition) < 15));
+  
+  slideshow.style.top = topPosition + "%";
+  
+  // Position based on side
+  if (fromLeft) {
+    slideshow.style.left = "12px";
+    slideshow.style.animation = "slideInFromLeft 700ms cubic-bezier(.2,.8,.2,1) forwards";
+  } else {
+    slideshow.style.right = "12px";
+    slideshow.style.animation = "slideInFromRight 700ms cubic-bezier(.2,.8,.2,1) forwards";
+  }
+  
+  // Add first image
+  const img = document.createElement("img");
+  img.src = selectedPhotos[0].src + cacheBust;
+  img.alt = selectedPhotos[0].caption || "Memory photo";
+  slideshow.appendChild(img);
+  
+  // Add counter
+  const counter = document.createElement("div");
+  counter.className = "slideshowCounter";
+  counter.textContent = `1/${selectedPhotos.length}`;
+  slideshow.appendChild(counter);
+  
+  // Add caption
+  const caption = document.createElement("div");
+  caption.className = "slideshowCaption";
+  caption.textContent = selectedPhotos[0].caption || "";
+  slideshow.appendChild(caption);
+  
+  slideshowsContainer.appendChild(slideshow);
+  
+  // Cycle through photos slowly (every 4 seconds)
+  let currentPhotoIdx = 0;
+  const cycleInterval = setInterval(() => {
+    currentPhotoIdx = (currentPhotoIdx + 1) % selectedPhotos.length;
+    const photo = selectedPhotos[currentPhotoIdx];
+    
+    // Gentle fade transition
+    img.style.opacity = "0";
+    setTimeout(() => {
+      img.src = photo.src + cacheBust;
+      caption.textContent = photo.caption || "";
+      counter.textContent = `${currentPhotoIdx + 1}/${selectedPhotos.length}`;
+      setTimeout(() => {
+        img.style.opacity = "1";
+      }, 100);
+    }, 350);
+  }, 4000);
+  
+  // Click to open in lightbox
+  slideshow.addEventListener("click", () => {
+    const photoIdx = CONTENT.photos.findIndex(p => p.src === selectedPhotos[currentPhotoIdx].src);
+    if (photoIdx !== -1) {
+      openLightbox(photoIdx);
+    }
+  });
+  
+  // Store reference
+  const slideshowData = {
+    element: slideshow,
+    photos: selectedPhotos,
+    cycleInterval: cycleInterval
+  };
+  activeSlideshows.push(slideshowData);
+  
+  // Remove after 12-18 seconds with slide-out animation
+  const lifetime = 12000 + Math.random() * 6000;
+  setTimeout(() => {
+    // Slide out to the same side it came from
+    if (fromLeft) {
+      slideshow.style.animation = "slideOutToLeft 600ms cubic-bezier(.2,.8,.2,1) forwards";
+    } else {
+      slideshow.style.animation = "slideOutToRight 600ms cubic-bezier(.2,.8,.2,1) forwards";
+    }
+    
+    setTimeout(() => {
+      clearInterval(cycleInterval);
+      slideshow.remove();
+      
+      // Remove from active list
+      const idx = activeSlideshows.findIndex(s => s.element === slideshow);
+      if (idx !== -1) activeSlideshows.splice(idx, 1);
+    }, 600);
+  }, lifetime);
+}
+
+/** Build the SVG path with story nodes - Horizontal Flow */
 function renderGameMap() {
   if (!gameMapEl || !activeChapterId) return;
   const chapter = CONTENT.gameChapters.find(ch => ch.id === activeChapterId);
   if (!chapter) return;
   const nodes = chapter.nodes || [];
-  const nodeSpacing = 62;
-  const mapHeight = nodes.length * nodeSpacing + 40;
-
-  let svg = `<svg class="mapSvg" viewBox="0 0 240 ${mapHeight}" aria-hidden="true">`;
-
+  
+  // Calculate horizontal spacing - fit all nodes + finish in view
+  const totalNodes = nodes.length + 1; // +1 for finish
+  const nodeRadius = 22;
+  const viewWidth = 100 * totalNodes; // Dynamic width based on node count
+  const viewHeight = 260;
+  const nodeSpacing = viewWidth / (totalNodes + 1);
+  
+  let svg = `<svg class="mapSvg" viewBox="0 0 ${viewWidth} ${viewHeight}" preserveAspectRatio="xMidYMid meet" aria-hidden="true">`;
+  
+  // Create flowing path
   for (let i = 0; i < nodes.length; i++) {
-    const cx = 120 + (i % 2 === 0 ? -40 : 40);
-    const cy = 28 + i * nodeSpacing;
     const node = nodes[i];
     const state = nodeStates[i];
-
-    // Line to next
+    
+    // Horizontal position
+    const cx = nodeSpacing * (i + 1);
+    
+    // Vertical wave pattern - creates a gentle flowing curve
+    const wave = Math.sin(i * 0.8) * 35;
+    const cy = viewHeight / 2 + wave;
+    
+    // Line to next node with curve
     if (i < nodes.length - 1) {
-      const nx = 120 + ((i + 1) % 2 === 0 ? -40 : 40);
-      const ny = 28 + (i + 1) * nodeSpacing;
-      svg += `<line class="mapLine${state.completed ? " mapLineDone" : ""}" x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" />`;
+      const nextWave = Math.sin((i + 1) * 0.8) * 35;
+      const nx = nodeSpacing * (i + 2);
+      const ny = viewHeight / 2 + nextWave;
+      
+      // Curved path
+      const midX = (cx + nx) / 2;
+      const midY = (cy + ny) / 2;
+      const controlY = midY + (Math.random() > 0.5 ? 15 : -15);
+      
+      svg += `<path class="mapLine${state.completed ? " mapLineDone" : ""}" d="M ${cx} ${cy} Q ${midX} ${controlY} ${nx} ${ny}" fill="none" />`;
     }
-
+    
     // Node circle
     let cls = "mapNode";
     if (state.completed) cls += " mapNodeDone";
     if (i === currentNodeIndex) cls += " mapNodeActive";
     if (i > currentNodeIndex) cls += " mapNodeLocked";
     
-    svg += `<circle class="${cls}" cx="${cx}" cy="${cy}" r="16" data-node-idx="${i}" style="cursor:pointer;" />`;
-
+    svg += `<circle class="${cls}" cx="${cx}" cy="${cy}" r="${nodeRadius}" data-node-idx="${i}" />`;
+    
     // Icon or checkmark
     const label = state.completed ? "✓" : node.icon;
-    svg += `<text class="mapLabel" x="${cx}" y="${cy}" dy="2" text-anchor="middle" dominant-baseline="central" font-size="16" style="pointer-events:none;">${label}</text>`;
+    svg += `<text class="mapLabel" x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central">${label}</text>`;
   }
-
+  
   // Finish flag
   const lastIdx = nodes.length - 1;
-  const lastCx = 120 + (lastIdx % 2 === 0 ? -40 : 40);
-  const finCy = 28 + (lastIdx + 1) * nodeSpacing;
-  const finCx = 120 + ((lastIdx + 1) % 2 === 0 ? -40 : 40);
+  const lastWave = Math.sin(lastIdx * 0.8) * 35;
+  const lastCx = nodeSpacing * (lastIdx + 1);
+  const lastCy = viewHeight / 2 + lastWave;
+  
+  const finWave = Math.sin((lastIdx + 1) * 0.8) * 35;
+  const finCx = nodeSpacing * (nodes.length + 1);
+  const finCy = viewHeight / 2 + finWave;
+  
   const allDone = nodeStates.every(s => s.completed);
-  svg += `<line class="mapLine${allDone ? " mapLineDone" : ""}" x1="${lastCx}" y1="${28 + lastIdx * nodeSpacing}" x2="${finCx}" y2="${finCy}" />`;
-  svg += `<circle class="mapNode mapNodeFinish${allDone ? " mapNodeDone" : ""}" cx="${finCx}" cy="${finCy}" r="16" />`;
-  svg += `<text class="mapLabel" x="${finCx}" y="${finCy}" dy="2" text-anchor="middle" dominant-baseline="central" font-size="16">🏁</text>`;
-
+  
+  // Curved line to finish
+  const finMidX = (lastCx + finCx) / 2;
+  const finMidY = (lastCy + finCy) / 2;
+  svg += `<path class="mapLine${allDone ? " mapLineDone" : ""}" d="M ${lastCx} ${lastCy} Q ${finMidX} ${finMidY + 15} ${finCx} ${finCy}" fill="none" />`;
+  
+  svg += `<circle class="mapNode mapNodeFinish${allDone ? " mapNodeDone" : ""}" cx="${finCx}" cy="${finCy}" r="${nodeRadius}" />`;
+  svg += `<text class="mapLabel" x="${finCx}" y="${finCy}" text-anchor="middle" dominant-baseline="central">🏁</text>`;
+  
   svg += `</svg>`;
   gameMapEl.innerHTML = svg;
 }
@@ -814,6 +1019,7 @@ document.addEventListener("click", (e) => {
   } else if (e.target.closest("#nodeFinishBtn")) {
     showChapterComplete();
   } else if (e.target.closest("#chapterBackBtn")) {
+    stopFloatingSlideshows();
     activeChapterId = null;
     gameResultEl.classList.remove("show");
     if (activeChapterTitleEl) activeChapterTitleEl.textContent = "Select a chapter to begin";
@@ -838,7 +1044,6 @@ initGame();
  *  Gallery
  * ================================================ */
 const photoGrid = document.getElementById("photoGrid");
-const cacheBust = "?v=7";
 console.log("Gallery: Loading", CONTENT.photos.length, "photos");
 CONTENT.photos.forEach((p, idx) => {
   const div = document.createElement("div");
@@ -889,6 +1094,7 @@ revealBtn.addEventListener("click", () => {
 document.getElementById("restartBtn").addEventListener("click", () => {
   revealBox.classList.remove("show");
   revealBox.setAttribute("aria-hidden", "true");
+  stopFloatingSlideshows();
   initGame();
   showPanel("cover");
 });
