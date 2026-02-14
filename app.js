@@ -2219,18 +2219,22 @@ function tick() {
 }
 
 /* ================================================
- *  Music
+ *  Music Playlist
  *
- *  Recommendations for your song file (music/song.mp3):
- *  - Style: soft ambient piano + light pads, 60–75 BPM
- *  - Trim to a loop-friendly section; fade the last
- *    0.6s out and first 0.6s in within the file itself.
+ *  - Plays through all songs in the playlist
+ *  - Automatically moves to next song when one ends
+ *  - Loops back to first song after playlist completes
  *  - Default volume is 0.35 (gentle background level).
  *  - Autoplay is OFF. The user must click Play first
  *    (required by iOS / Safari policy).
  * ================================================ */
-const audio = new Audio("music/hey-lady.mp3");
-audio.loop    = true;
+const playlist = [
+  "music/hey-lady.mp3",
+  "music/Baby_Im_Yours.mp3"
+];
+
+let currentSongIndex = 0;
+const audio = new Audio(playlist[currentSongIndex]);
 audio.volume  = parseFloat(localStorage.getItem("lbVolume") || "0.35");
 audio.preload = "auto";
 
@@ -2242,6 +2246,15 @@ const volumeSlider = document.getElementById("volumeSlider");
 const muteToggle   = document.getElementById("muteToggle");
 
 volumeSlider.value = audio.volume;
+
+// Auto-advance to next song when current song ends
+audio.addEventListener("ended", () => {
+  if (isPlaying) {
+    currentSongIndex = (currentSongIndex + 1) % playlist.length;
+    audio.src = playlist[currentSongIndex];
+    audio.play().catch(() => {});
+  }
+});
 
 musicToggle.addEventListener("click", () => {
   if (isPlaying) {
