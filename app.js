@@ -428,7 +428,7 @@ Happy Valentine's Day ❤️`,
  *  Preferences
  * ================================================ */
 const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const PANEL_ORDER = ["cover", "intro", "chapters", "gallery", "wouldyourather", "final"];
+const PANEL_ORDER = ["cover", "intro", "chapters", "gallery", "wouldyourather", "bingo2026", "final"];
 const cacheBust = "?v=7";
 
 /* ================================================
@@ -1460,6 +1460,476 @@ if (wyrPanel) {
     }
   });
   observer.observe(wyrPanel, { attributes: true, attributeFilter: ["class"] });
+}
+
+/* ================================================
+ *  2026 BINGO
+ * ================================================ */
+
+// Inspiring placeholder prompts
+const BINGO_PLACEHOLDERS = [
+  "A place we want to visit together...",
+  "Something new to learn as a couple...",
+  "A hobby to try together...",
+  "An adventure to go on...",
+  "A skill to master together...",
+  "A tradition to start...",
+  "A dream to chase...",
+  "A challenge to overcome...",
+  "A memory to create...",
+  "A project to build...",
+  "A goal to achieve...",
+  "A restaurant to try...",
+  "A date night idea...",
+  "A way to grow closer...",
+  "A surprise for each other...",
+  "A book to read together...",
+  "A movie to watch...",
+  "A concert or event to attend...",
+  "A way to serve others together...",
+  "A milestone to celebrate...",
+  "A conversation to have...",
+  "A habit to build...",
+  "A promise to keep...",
+  "A moment to cherish...",
+  "A dream to share..."
+];
+
+// Shuffle and select 25 unique placeholders
+function getShuffledPlaceholders() {
+  const shuffled = [...BINGO_PLACEHOLDERS].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 25);
+}
+
+const BINGO_STORAGE_KEY = "lbBingo2026";
+
+// Default cell structure
+function createEmptyCell(index, placeholder) {
+  return {
+    id: `cell-${index}`,
+    text: "",
+    difficulty: null, // null, "easy", "medium", "difficult"
+    placeholder: placeholder
+  };
+}
+
+// Load bingo data from localStorage
+function loadBingoData() {
+  const saved = localStorage.getItem(BINGO_STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error("Failed to parse bingo data:", e);
+    }
+  }
+  
+  // Initialize with placeholders
+  const placeholders = getShuffledPlaceholders();
+  return Array.from({ length: 25 }, (_, i) => 
+    createEmptyCell(i, placeholders[i])
+  );
+}
+
+// Save bingo data to localStorage
+function saveBingoData(data) {
+  localStorage.setItem(BINGO_STORAGE_KEY, JSON.stringify(data));
+}
+
+let bingoData = loadBingoData();
+
+// Render bingo board
+function renderBingoBoard() {
+  const board = document.getElementById("bingoBoard");
+  if (!board) return;
+  
+  board.innerHTML = "";
+  
+  bingoData.forEach((cell, index) => {
+    const cellEl = document.createElement("div");
+    cellEl.className = "bingoCell";
+    cellEl.setAttribute("data-index", index);
+    
+    // Set difficulty attribute for color coding
+    if (cell.difficulty) {
+      cellEl.setAttribute("data-difficulty", cell.difficulty);
+    }
+    
+    // Create textarea
+    const textarea = document.createElement("textarea");
+    textarea.className = "bingoCellInput";
+    textarea.placeholder = cell.placeholder;
+    textarea.value = cell.text;
+    textarea.setAttribute("maxlength", "150");
+    
+    // Create difficulty selector
+    const selector = document.createElement("div");
+    selector.className = "difficultySelector";
+    selector.innerHTML = `
+      <button class="difficultyBtn easy ${cell.difficulty === 'easy' ? 'active' : ''}" 
+              data-difficulty="easy" 
+              title="Easy"
+              aria-label="Set difficulty to easy"></button>
+      <button class="difficultyBtn medium ${cell.difficulty === 'medium' ? 'active' : ''}" 
+              data-difficulty="medium" 
+              title="Medium"
+              aria-label="Set difficulty to medium"></button>
+      <button class="difficultyBtn difficult ${cell.difficulty === 'difficult' ? 'active' : ''}" 
+              data-difficulty="difficult" 
+              title="Difficult"
+              aria-label="Set difficulty to difficult"></button>
+    `;
+    
+    cellEl.appendChild(textarea);
+    cellEl.appendChild(selector);
+    board.appendChild(cellEl);
+  });
+  
+  // Attach event listeners
+  attachBingoEventListeners();
+}
+
+// Attach event handlers
+function attachBingoEventListeners() {
+  const board = document.getElementById("bingoBoard");
+  if (!board) return;
+  
+  // Text input handling with auto-save
+  board.addEventListener("input", (e) => {
+    if (e.target.classList.contains("bingoCellInput")) {
+      const index = parseInt(e.target.closest(".bingoCell").getAttribute("data-index"));
+      bingoData[index].text = e.target.value;
+      saveBingoData(bingoData);
+      
+      // Visual feedback
+      const cell = e.target.closest(".bingoCell");
+      cell.classList.add("saved");
+      setTimeout(() => cell.classList.remove("saved"), 600);
+    }
+  });
+  
+  // Focus/blur handling for editing state
+  board.addEventListener("focus", (e) => {
+    if (e.target.classList.contains("bingoCellInput")) {
+      e.target.closest(".bingoCell").classList.add("editing");
+    }
+  }, true);
+  
+  board.addEventListener("blur", (e) => {
+    if (e.target.classList.contains("bingoCellInput")) {
+      e.target.closest(".bingoCell").classList.remove("editing");
+    }
+  }, true);
+  
+  // Difficulty button handling
+  board.addEventListener("click", (e) => {
+    if (e.target.classList.contains("difficultyBtn")) {
+      const cell = e.target.closest(".bingoCell");
+      const index = parseInt(cell.getAttribute("data-index"));
+      const difficulty = e.target.getAttribute("data-difficulty");
+      
+      // Update data
+      bingoData[index].difficulty = difficulty;
+      saveBingoData(bingoData);
+      
+      // Update UI
+      cell.setAttribute("data-difficulty", difficulty);
+      
+      // Update active state
+      cell.querySelectorAll(".difficultyBtn").forEach(btn => 
+        btn.classList.toggle("active", btn.getAttribute("data-difficulty") === difficulty)
+      );
+      
+      // Romantic animation - emit hearts
+      const rect = e.target.getBoundingClientRect();
+      emitParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 3, "heart");
+      
+      // Visual feedback
+      cell.classList.add("saved");
+      setTimeout(() => cell.classList.remove("saved"), 600);
+    }
+  });
+}
+
+// Clear all button handler
+const clearAllBtn = document.getElementById("bingoClearAll");
+if (clearAllBtn) {
+  clearAllBtn.addEventListener("click", () => {
+    // Confirm before clearing
+    if (confirm("Are you sure you want to clear all goals? This cannot be undone.")) {
+      const placeholders = getShuffledPlaceholders();
+      bingoData = Array.from({ length: 25 }, (_, i) => 
+        createEmptyCell(i, placeholders[i])
+      );
+      saveBingoData(bingoData);
+      renderBingoBoard();
+      
+      // Show feedback
+      popConfetti(15);
+    }
+  });
+}
+
+// Export bingo board as PDF
+async function exportBingoToPDF() {
+  const savePdfBtn = document.getElementById("bingoSavePDF");
+  
+  // Disable button and show loading state
+  if (savePdfBtn) {
+    savePdfBtn.disabled = true;
+    savePdfBtn.textContent = "Generating PDF...";
+  }
+  
+  try {
+    // Create a clean copy of the board for PDF
+    const bingoContainer = document.querySelector(".bingoContainer");
+    
+    // Clone the container for export
+    const exportContainer = bingoContainer.cloneNode(true);
+    exportContainer.style.maxWidth = "100%";
+    exportContainer.style.width = "1050px";
+    exportContainer.style.padding = "20px 30px";
+    exportContainer.style.background = "#ffffff";
+    exportContainer.style.margin = "0 auto";
+    
+    // Hide actions and modify for print
+    const actions = exportContainer.querySelector(".bingoActions");
+    if (actions) actions.style.display = "none";
+    
+    // Make difficulty selectors invisible (just show colored backgrounds)
+    const selectors = exportContainer.querySelectorAll(".difficultySelector");
+    selectors.forEach(s => s.style.display = "none");
+    
+    // Style header - more compact
+    const header = exportContainer.querySelector(".bingoHeader");
+    if (header) {
+      header.style.marginBottom = "15px";
+    }
+    
+    // Replace textareas with divs for better PDF rendering
+    const textareas = exportContainer.querySelectorAll(".bingoCellInput");
+    textareas.forEach(textarea => {
+      const div = document.createElement("div");
+      div.className = "bingoCellText";
+      div.textContent = textarea.value || textarea.placeholder;
+      div.style.cssText = `
+        width: 100%;
+        height: 100%;
+        min-height: 70px;
+        padding: 6px;
+        font-size: 11px;
+        line-height: 1.3;
+        color: #000000 !important;
+        font-weight: 900 !important;
+        word-wrap: break-word;
+        word-break: break-word;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        text-shadow: 0.5px 0.5px 0px rgba(0,0,0,0.3);
+      `;
+      
+      // If it's a placeholder, still make it VERY dark and readable
+      if (!textarea.value) {
+        div.style.color = "#1a1a1a !important";
+        div.style.fontStyle = "italic";
+        div.style.fontWeight = "800 !important";
+      }
+      
+      textarea.parentNode.replaceChild(div, textarea);
+    });
+    
+    // Style cells for print with VIBRANT, COLORFUL backgrounds
+    const cells = exportContainer.querySelectorAll(".bingoCell");
+    cells.forEach(cell => {
+      cell.style.minHeight = "75px";
+      cell.style.height = "75px";
+      cell.style.cursor = "default";
+      cell.style.pageBreakInside = "avoid";
+      cell.style.border = "3px solid #000000 !important";
+      cell.style.borderRadius = "8px";
+      
+      // SUPER SATURATED, DARK difficulty backgrounds - VERY VISIBLE
+      const difficulty = cell.getAttribute("data-difficulty");
+      if (difficulty === "easy") {
+        // DARK, SATURATED GREEN
+        cell.style.background = "#4ade80 !important";
+        cell.style.borderColor = "#15803d !important";
+      } else if (difficulty === "medium") {
+        // DARK, SATURATED YELLOW/ORANGE
+        cell.style.background = "#facc15 !important";
+        cell.style.borderColor = "#a16207 !important";
+      } else if (difficulty === "difficult") {
+        // DARK, SATURATED RED
+        cell.style.background = "#f87171 !important";
+        cell.style.borderColor = "#b91c1c !important";
+      } else {
+        // Light gray for empty cells
+        cell.style.background = "#e5e7eb !important";
+        cell.style.borderColor = "#374151 !important";
+      }
+    });
+    
+    // Style title - BOLD and COLORFUL
+    const title = exportContainer.querySelector(".bingoTitle");
+    if (title) {
+      title.style.color = "#ec4899";
+      title.style.background = "none";
+      title.style.webkitBackgroundClip = "unset";
+      title.style.webkitTextFillColor = "unset";
+      title.style.backgroundClip = "unset";
+      title.style.marginBottom = "8px";
+      title.style.fontSize = "28px";
+      title.style.fontWeight = "900";
+      title.style.textShadow = "1px 1px 2px rgba(0,0,0,0.1)";
+    }
+    
+    const subtitle = exportContainer.querySelector(".bingoSubtitle");
+    if (subtitle) {
+      subtitle.style.color = "#111827 !important";
+      subtitle.style.marginBottom = "12px";
+      subtitle.style.fontSize = "13px";
+      subtitle.style.fontWeight = "700";
+    }
+    
+    // Style legend - DARK and HIGH CONTRAST
+    const legend = exportContainer.querySelector(".bingoLegend");
+    if (legend) {
+      legend.style.background = "#f3f4f6 !important";
+      legend.style.marginTop = "12px";
+      legend.style.marginBottom = "8px";
+      legend.style.padding = "10px";
+      legend.style.border = "3px solid #1f2937 !important";
+      legend.style.borderRadius = "8px";
+      legend.style.display = "flex";
+      legend.style.justifyContent = "center";
+      legend.style.gap = "20px";
+      
+      // Style legend dots with DARK, SATURATED colors matching cells
+      const dots = legend.querySelectorAll(".legendDot");
+      dots.forEach(dot => {
+        dot.style.width = "18px";
+        dot.style.height = "18px";
+        dot.style.border = "3px solid #000000 !important";
+        if (dot.classList.contains("legendEasy")) {
+          dot.style.background = "#4ade80 !important";
+        } else if (dot.classList.contains("legendMedium")) {
+          dot.style.background = "#facc15 !important";
+        } else if (dot.classList.contains("legendDifficult")) {
+          dot.style.background = "#f87171 !important";
+        }
+      });
+      
+      // Style legend text - BLACK and BOLD
+      const items = legend.querySelectorAll(".legendItem");
+      items.forEach(item => {
+        item.style.color = "#000000 !important";
+        item.style.fontWeight = "900 !important";
+        item.style.fontSize = "11px";
+      });
+    }
+    
+    // Style board - DARK borders
+    const board = exportContainer.querySelector(".bingoBoard");
+    if (board) {
+      board.style.background = "#ffffff !important";
+      board.style.border = "4px solid #000000 !important";
+      board.style.borderRadius = "10px";
+      board.style.padding = "12px";
+      board.style.gap = "6px";
+      board.style.gridTemplateColumns = "repeat(5, 1fr)";
+    }
+    
+    // Add DARK footer
+    const dateFooter = document.createElement("div");
+    dateFooter.style.cssText = `
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 3px solid #000000 !important;
+      color: #000000 !important;
+      font-size: 10px;
+      font-weight: 900 !important;
+    `;
+    dateFooter.textContent = `Created on ${new Date().toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })} ❤️ Corley & Oliver`;
+    exportContainer.appendChild(dateFooter);
+    
+    // Configure PDF options - HIGH QUALITY
+    const opt = {
+      margin: [0.25, 0.25, 0.25, 0.25],
+      filename: '2026-Relationship-Goals.pdf',
+      image: { type: 'jpeg', quality: 1.0 },
+      html2canvas: { 
+        scale: 3,
+        useCORS: true,
+        letterRendering: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        width: 1100,
+        height: 750,
+        removeContainer: true
+      },
+      jsPDF: { 
+        unit: 'in', 
+        format: 'letter', 
+        orientation: 'landscape',
+        compress: false
+      },
+      pagebreak: { mode: 'avoid-all' }
+    };
+    
+    // Generate PDF
+    await html2pdf().set(opt).from(exportContainer).save();
+    
+    // Success feedback
+    popConfetti(20);
+    
+    // Show temporary success message
+    if (savePdfBtn) {
+      savePdfBtn.textContent = "✓ Saved!";
+      setTimeout(() => {
+        savePdfBtn.textContent = "💾 Save as PDF";
+        savePdfBtn.disabled = false;
+      }, 2000);
+    }
+    
+  } catch (error) {
+    console.error("PDF export failed:", error);
+    alert("Sorry, there was an error creating the PDF. Please try again.");
+    
+    // Reset button
+    if (savePdfBtn) {
+      savePdfBtn.textContent = "💾 Save as PDF";
+      savePdfBtn.disabled = false;
+    }
+  }
+}
+
+// Save as PDF button handler
+const savePdfBtn = document.getElementById("bingoSavePDF");
+if (savePdfBtn) {
+  savePdfBtn.addEventListener("click", exportBingoToPDF);
+}
+
+// Initialize bingo board when panel becomes active
+const bingoPanel = document.getElementById("bingo2026");
+if (bingoPanel) {
+  let bingoInitialized = false;
+  const observer = new MutationObserver(() => {
+    if (bingoPanel.classList.contains("active") && !bingoInitialized) {
+      bingoInitialized = true;
+      renderBingoBoard();
+      
+      // Gentle confetti on first load
+      setTimeout(() => popConfetti(8), 400);
+    }
+  });
+  observer.observe(bingoPanel, { attributes: true, attributeFilter: ["class"] });
 }
 
 /* ================================================

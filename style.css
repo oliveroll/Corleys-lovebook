@@ -1778,6 +1778,221 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   }
 }
 
+/* ===== 2026 BINGO ===== */
+.bingoContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.bingoHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.bingoTitle {
+  font-size: 52px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleFloat 3s ease-in-out infinite;
+}
+
+.bingoSubtitle {
+  font-size: 20px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.bingoBoard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.bingoCell {
+  position: relative;
+  min-height: 140px;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: all 300ms cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+}
+
+.bingoCell:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255,105,180,0.2);
+  border-color: var(--accent1);
+}
+
+.bingoCell.editing {
+  border-color: var(--accent1);
+  box-shadow: 0 0 0 3px rgba(255,105,180,0.2);
+  transform: scale(1.02);
+}
+
+/* Color-coded difficulty backgrounds */
+.bingoCell[data-difficulty="easy"] {
+  background: linear-gradient(135deg, rgba(74,222,128,0.12), rgba(34,197,94,0.08));
+  border-color: rgba(74,222,128,0.3);
+}
+
+.bingoCell[data-difficulty="medium"] {
+  background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(245,158,11,0.08));
+  border-color: rgba(251,191,36,0.3);
+}
+
+.bingoCell[data-difficulty="difficult"] {
+  background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(220,38,38,0.08));
+  border-color: rgba(239,68,68,0.3);
+}
+
+.bingoCellInput {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 15px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+.bingoCellInput::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.difficultySelector {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.bingoCell:hover .difficultySelector,
+.bingoCell.editing .difficultySelector {
+  opacity: 1;
+}
+
+.difficultyBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.difficultyBtn.easy {
+  background: rgba(74,222,128,0.4);
+}
+
+.difficultyBtn.medium {
+  background: rgba(251,191,36,0.4);
+}
+
+.difficultyBtn.difficult {
+  background: rgba(239,68,68,0.4);
+}
+
+.difficultyBtn.active {
+  transform: scale(1.15);
+  border-color: rgba(255,255,255,0.8);
+  box-shadow: 0 0 12px currentColor;
+}
+
+.bingoLegend {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.legendDot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.legendDot.legendEasy {
+  background: rgba(74,222,128,0.5);
+}
+
+.legendDot.legendMedium {
+  background: rgba(251,191,36,0.5);
+}
+
+.legendDot.legendDifficult {
+  background: rgba(239,68,68,0.5);
+}
+
+.bingoActions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@keyframes bingoHeartFloat {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-60px) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+.bingoCell.saved {
+  animation: cellSaved 600ms cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes cellSaved {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* ===== FINAL PAGE (Landing Style) ===== */
 .finalLanding {
   position: relative;
@@ -2082,6 +2297,22 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   .wyrFinalScoreNumber {
     font-size: 64px;
   }
+  
+  /* Bingo responsive */
+  .bingoBoard {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 16px;
+  }
+  
+  .bingoCell {
+    min-height: 120px;
+    padding: 12px;
+  }
+  
+  .bingoTitle {
+    font-size: 38px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -2179,6 +2410,27 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   
   .wyrScoreNumber {
     font-size: 56px;
+  }
+  
+  /* Bingo mobile */
+  .bingoBoard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 12px;
+  }
+  
+  .bingoCell {
+    min-height: 100px;
+    padding: 10px;
+  }
+  
+  .bingoTitle {
+    font-size: 32px;
+  }
+  
+  .bingoLegend {
+    flex-direction: column;
+    gap: 12px;
   }
 }
 

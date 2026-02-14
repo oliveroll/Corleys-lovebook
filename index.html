@@ -28,6 +28,7 @@
         <button class="navBtn" data-go="chapters">Chapters</button>
         <button class="navBtn" data-go="gallery">Gallery</button>
         <button class="navBtn" data-go="wouldyourather">Would You Rather</button>
+        <button class="navBtn" data-go="bingo2026">2026 Bingo</button>
         <button class="navBtn" data-go="final">Final</button>
       </nav>
     </div>
@@ -174,10 +175,46 @@
               <p class="wyrResultsMessage" id="wyrResultsMessage">Great job!</p>
               <div class="wyrResultsActions">
                 <button class="primary" id="wyrPlayAgain">Play Again</button>
-                <button class="ghost" data-next="final">Continue to Final &rarr;</button>
+                <button class="ghost" data-next="bingo2026">Continue to 2026 Bingo &rarr;</button>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2026 BINGO -->
+    <section id="bingo2026" class="panel" aria-label="2026 Goals Bingo">
+      <div class="bingoContainer">
+        <div class="bingoHeader">
+          <h1 class="bingoTitle">Goals of 2026 for our relationship</h1>
+          <p class="bingoSubtitle">Brainstorm together what you want to achieve this year</p>
+        </div>
+        
+        <div class="bingoBoard" id="bingoBoard">
+          <!-- 25 cells (5x5) will be generated dynamically -->
+        </div>
+        
+        <div class="bingoLegend">
+          <div class="legendItem">
+            <span class="legendDot legendEasy"></span>
+            <span>Easy</span>
+          </div>
+          <div class="legendItem">
+            <span class="legendDot legendMedium"></span>
+            <span>Medium</span>
+          </div>
+          <div class="legendItem">
+            <span class="legendDot legendDifficult"></span>
+            <span>Difficult</span>
+          </div>
+        </div>
+        
+        <div class="bingoActions">
+          <button class="ghost" data-prev="wouldyourather">&larr; Back</button>
+          <button class="primary" id="bingoSavePDF">💾 Save as PDF</button>
+          <button class="ghost" id="bingoClearAll">Clear All</button>
+          <button class="primary" data-next="final">Continue &rarr;</button>
         </div>
       </div>
     </section>
@@ -216,6 +253,9 @@
       <div class="lbCaption" id="lbCaption" aria-live="polite"></div>
     </div>
   </div>
+
+  <!-- PDF Export Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script src="app.js?v=8"></script>
 </body>
