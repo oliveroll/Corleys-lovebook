@@ -195,19 +195,129 @@ Happy Valentine's Day ❤️
     {
       id: "chapter3",
       number: "Chapter 3",
-      title: "Coming Soon",
-      subtitle: "The Next Chapter",
-      intro: "Chapter 3 of our 2025 journey...",
-      locked: true,
-      nodes: []
+      title: "Long Distance, Lafayette Dates, and Germany",
+      subtitle: "Making It Work",
+      intro: "I started my job in Lafayette. Long distance became real. It was hard, but we chose it anyway — and we built new memories: Lafayette dates, Alabama trips, Christmas, and Germany with my family.",
+      nodes: [
+        {
+          id: "node13",
+          title: "Lafayette Job (Choosing Long Distance)",
+          subtitle: "Making It Work",
+          icon: "💼",
+          memory: "I started my job in Lafayette. Long distance was sad, but we did it anyway — it was the only way I could stay in America. And I still feel confident we can do it, even when it's hard.",
+          questions: [
+            { q: "Where did I start my job?", choices: ["Alabama", "Lafayette", "Germany", "New York"], answer: 1 },
+            { q: "Why did we commit to long distance at this point?", choices: ["Because it was easy", "Because it was the only chance for me to stay in America", "Because we wanted a break", "Because we didn't care"], answer: 1 },
+            { q: "Even when it's hard, what do I feel about us doing long distance?", choices: ["Hopeless", "Confident we can do it", "Indifferent", "Angry all the time"], answer: 1 }
+          ],
+          successNote: "Hard doesn't mean wrong. We chose us.",
+          failNote: "Try again — this is the 'we didn't quit' node."
+        },
+        {
+          id: "node14",
+          title: "First Lafayette Visit (Our City Memories)",
+          subtitle: "Our City",
+          icon: "🏙️",
+          memory: "You came up to Lafayette and we had our first date there. Cute dates, real laughs — and suddenly Lafayette felt warmer because you were in it.",
+          questions: [
+            { q: "What made Lafayette feel different for me?", choices: ["The weather", "The job", "Making memories there with you", "The food alone"], answer: 2 },
+            { q: "What kind of dates did we have in Lafayette?", choices: ["Awkward dates", "Cute dates", "No dates", "Only business meetings"], answer: 1 },
+            { q: "I learned to have better memories in Lafayette since I spent time with you. What matters most?", choices: ["The city itself", "You being there", "The restaurants", "The weather"], answer: 1 }
+          ],
+          successNote: "You didn't just visit a city — you changed it for me.",
+          failNote: "Replay it. This is where Lafayette becomes 'ours.'"
+        },
+        {
+          id: "node15",
+          title: "7-Eleven Club (Celebrating Your Offer)",
+          subtitle: "Your Win",
+          icon: "🎉",
+          memory: "We had our cute date at the 7-Eleven club — and we celebrated your job offer. It was funny, sweet, and so us.",
+          questions: [
+            { q: "Where was our cute little celebration date?", choices: ["Starbucks", "7-Eleven club", "A fancy rooftop", "The airport"], answer: 1 },
+            { q: "What were we celebrating?", choices: ["My PR", "Your job offer", "A birthday", "Graduation"], answer: 1 },
+            { q: "What was the vibe of that night?", choices: ["Boring", "Cute and funny", "Stressful", "Sad"], answer: 1 }
+          ],
+          successNote: "I love celebrating your wins like they're mine too.",
+          failNote: "Try again — this one is too iconic to miss."
+        },
+        {
+          id: "node16",
+          title: "Black Dress Dinner (The Laughing Night)",
+          subtitle: "That Dress",
+          icon: "🖤",
+          memory: "We had the cutest dinner. You wore a beautiful black dress that I loved — and I laughed so much that night.",
+          questions: [
+            { q: "What were you wearing at the cutest dinner?", choices: ["A red dress", "A black dress", "A hoodie", "A suit"], answer: 1 },
+            { q: "What do I remember most about the night?", choices: ["Being bored", "Laughing a lot", "Falling asleep", "Arguing"], answer: 1 },
+            { q: "Why is that dinner memorable?", choices: ["The food only", "Your beautiful black dress and laughter", "Nothing special", "I forgot"], answer: 1 }
+          ],
+          successNote: "That black dress lives rent-free in my head.",
+          failNote: "Nope. The black dress was the main character."
+        },
+        {
+          id: "node17",
+          title: "Winery + Bruschetta (We Need That Again)",
+          subtitle: "Wine & Food",
+          icon: "🍷",
+          memory: "We went to a winery, drank wine, and had bruschetta. It was so delicious — we need to do that again.",
+          questions: [
+            { q: "Where did we go for wine and snacks?", choices: ["A bowling alley", "A winery", "A library", "A stadium"], answer: 1 },
+            { q: "What did we eat there?", choices: ["Sushi", "Bruschetta", "Tacos", "Pancakes"], answer: 1 },
+            { q: "What do we need to do with this experience?", choices: ["Forget it", "Do it again", "Never repeat it", "Just remember it"], answer: 1 }
+          ],
+          successNote: "Wine + you + bruschetta = perfect math.",
+          failNote: "Try again — the bruschetta is important."
+        },
+        {
+          id: "node18",
+          title: "Flights + Alabama (Making It Work)",
+          subtitle: "Effort",
+          icon: "✈️",
+          memory: "We do long distance and try to fly back and forth. We go to Alabama to spend time together and keep choosing us even when travel is exhausting.",
+          questions: [
+            { q: "How do we try to make long distance work?", choices: ["Ignoring each other", "Flying back and forth", "Only texting once a week", "Never meeting"], answer: 1 },
+            { q: "What's the core theme of this node?", choices: ["Convenience", "Effort", "Luck", "Being casual"], answer: 1 }
+          ],
+          successNote: "Distance is real. So is effort. So are we.",
+          failNote: "Try again — this is the 'we show up' node."
+        },
+        {
+          id: "node19",
+          title: "Christmas Tree (Home Feeling)",
+          subtitle: "Home Moments",
+          icon: "🎄",
+          memory: "Over Christmas we got the Christmas tree with your family. I got my first ornament ever — a Charizard Pokemon. Little home moments in the middle of all the distance.",
+          questions: [
+            { q: "What did we get over Christmas?", choices: ["A puppy", "A Christmas tree", "A new car", "A boat"], answer: 1 },
+            { q: "What did that moment represent?", choices: ["Just decoration", "A little home feeling together", "A random purchase", "Nothing special"], answer: 1 },
+            { q: "What makes this moment special?", choices: ["The tree itself", "Home feeling in the middle of distance", "The price", "Nothing"], answer: 1 }
+          ],
+          successNote: "Home isn't a place. It's you next to me.",
+          failNote: "Try again — the tree is part of the timeline."
+        },
+        {
+          id: "node20",
+          title: "Germany Trip (Culture, Family, and Chaos)",
+          subtitle: "My World",
+          icon: "🇩🇪",
+          memory: "We flew to Germany and you met my family and friends. You saw my culture and where I grew up. We had the most fun sledding, eating good food, meeting my parents — and yes, the hotel in the red light district was… an experience.",
+          questions: [
+            { q: "Where did we fly to together?", choices: ["Mexico", "Germany", "France", "Canada"], answer: 1 },
+            { q: "What did you get to experience there?", choices: ["Only museums", "My culture and where I grew up", "Just work meetings", "Nothing new"], answer: 1 },
+            { q: "Which of these happened on the Germany trip?", choices: ["Sledding + good food", "Skydiving", "Buying a house", "Running a marathon"], answer: 0 }
+          ],
+          successNote: "You met my world — and still stayed close.",
+          failNote: "Try again. Germany was a big milestone."
+        }
+      ]
     },
     {
       id: "chapter4",
       number: "Chapter 4",
-      title: "Coming Soon",
-      subtitle: "The Final Chapter",
-      intro: "Chapter 4 of our 2025 journey...",
-      locked: true,
+      title: "2026 — One Year Together",
+      subtitle: "The Journey Continues",
+      intro: "Now it's 2026, and in March we're already one year together — isn't that crazy???????? I can't believe we made it this far, and I feel like I'm learning to love you more and more. Even though it's not always flowers and rose-colored glasses, we realize the important thing: we come back, we talk about it, and we find each other again. That's what matters.\n\nI'm coming on the 14th to visit your family and help your mom. Then we're spending time in Birmingham to see what the city has to offer.\n\nIn June, we're flying with your whole family to Peru — which is also crazy! A whole trip with your family to another country.\n\nAnd then we see what's gonna happen this year :)",
       nodes: []
     }
   ],
@@ -219,36 +329,36 @@ And I'm grateful I get to do life with you.
 Happy Valentine's Day ❤️`,
   // List your photos here (must exist in /photos)
   photos: [
-    { src: "photos/IMG_2748.jpg", caption: "Us. Just us. (And probably thinking about food.)" },
-    { src: "photos/IMG_2760.jpg", caption: "POV: You, 5 minutes before asking 'Are you gonna eat that?'" },
-    { src: "photos/IMG_2786.jpg", caption: "The face of someone who just stole my hoodie. Again." },
-    { src: "photos/IMG_2793.jpg", caption: "Sleeping beauty (drool included? maybe)." },
-    { src: "photos/IMG_2860.jpg", caption: "I love this one. Even if you were hangry." },
-    { src: "photos/IMG_2882.jpg", caption: "Evidence: You claiming you weren't tired." },
-    { src: "photos/IMG_2937.jpg", caption: "My favorite view (right next to me)." },
-    { src: "photos/IMG_2956.jpg", caption: "❤️ (You, plotting your next snack heist)." },
-    { src: "photos/IMG_2961.jpg", caption: "Caught in the act: Stealing my stuff." },
-    { src: "photos/IMG_4777.jpg", caption: "Morning mood: Coffee first, Oliver second." },
-    { src: "photos/IMG_4803.jpg", caption: "A rare photo of you NOT eating." },
-    { src: "photos/IMG_4870.jpg", caption: "Sunset... and thinking about dinner." },
-    { src: "photos/IMG_5088.jpg", caption: "You: 'I'm not sleepy.' Also you: 😴" },
-    { src: "photos/IMG_5150.jpg", caption: "Professional hoodie thief at work." },
-    { src: "photos/IMG_5171.jpg", caption: "Best travel buddy (mostly because you sleep on the plane)." },
-    { src: "photos/IMG_5172.jpg", caption: "Flashback to when you realized my food is your food." },
-    { src: "photos/IMG_5754.jpg", caption: "Another stolen hoodie? Really?" },
-    { src: "photos/IMG_5774.jpg", caption: "Dreaming about fries." },
-    { src: "photos/IMG_6320.jpg", caption: "The 'I'm innocent' face (after eating my leftovers)." },
-    { src: "photos/IMG_6811.jpg", caption: "Just waking up and already perfect." },
-    { src: "photos/IMG_6888.jpg", caption: "Safe place. Right here." },
-    { src: "photos/IMG_8280.jpg", caption: "Adventure mode (snack breaks mandatory)." },
-    { src: "photos/IMG_8438.jpg", caption: "You look cute when you're judging my driving." },
-    { src: "photos/IMG_8453.jpg", caption: "Stolen heart. Stolen sweater. Stolen fries." },
-    { src: "photos/IMG_8514.jpg", caption: "My favorite person to do nothing with." },
-    { src: "photos/IMG_8572.jpg", caption: "Always." },
-    { src: "photos/20250924_200631.jpg", caption: "September moments." },
-    { src: "photos/20250926_111746.jpg", caption: "Morning light." },
+    { src: "photos/IMG_2748.jpg", caption: "Us. Just us. Our first tour in westlafayette together experience the restaurant and winerys" },
+    { src: "photos/IMG_2760.jpg", caption: "Great memory we are eating at the winery bruchetta we need to repeat that." },
+    { src: "photos/IMG_2786.jpg", caption: "Beautiful smile of my sweet girl." },
+    { src: "photos/IMG_2793.jpg", caption: "Of course we most of the time just eating. Here at the lobby having our Breakfast. Love that orange top!!!" },
+    { src: "photos/IMG_2860.jpg", caption: "One of your favorite photos that i dont understand why... but i look crazy ngl" },
+    { src: "photos/IMG_2882.jpg", caption: "Beautiful black outfit. you always so stylish and beautiful" },
+    { src: "photos/IMG_2937.jpg", caption: "Thats us when we finally be togheter." },
+    { src: "photos/IMG_2956.jpg", caption: "One of my favorite photos us having a really good dinner celebrating your job" },
+    { src: "photos/IMG_2961.jpg", caption: "Another angle of us!!!" },
+    { src: "photos/IMG_4777.jpg", caption: "I dont know why but i have so many photos of you eating haha. I dont know why you pounding in this one but you kinda cute" },
+    { src: "photos/IMG_4803.jpg", caption: "Photo of you stealing my jacket" },
+    { src: "photos/IMG_4870.jpg", caption: "Anoter food picture haha we have so many pictures in food" },
+    { src: "photos/IMG_5088.jpg", caption: "Chicago the windy city had the most windiest love." },
+    { src: "photos/IMG_5150.jpg", caption: "One of your favorite food here in Lafayette need to get that curry again" },
+    { src: "photos/IMG_5171.jpg", caption: "Cant wait to put down every memory so we can frame it!!!! THats the most exciting thing" },
+    { src: "photos/IMG_5172.jpg", caption: "I would carry for you the world and more." },
+    { src: "photos/IMG_5754.jpg", caption: "Love that dress!" },
+    { src: "photos/IMG_5774.jpg", caption: "You with a cute smile and flat bread" },
+    { src: "photos/IMG_6320.jpg", caption: "Picking a christmas tree with your family was a pleasure. (PS. look at george he found something more intersting)" },
+    { src: "photos/IMG_6811.jpg", caption: "Picture of you graduating im so glad that i could see you graduating to be a PA!!!!" },
+    { src: "photos/IMG_6888.jpg", caption: "Another Picture of you graduating love that as well!!" },
+    { src: "photos/IMG_8280.jpg", caption: "You again stealing some sunglasses haha..." },
+    { src: "photos/IMG_8438.jpg", caption: "Us dressed up for the orchestra with my dad wonderful memory" },
+    { src: "photos/IMG_8453.jpg", caption: "Love that dress so much everything was on point here!" },
+    { src: "photos/IMG_8514.jpg", caption: "Favorite person to do a party with!!" },
+    { src: "photos/IMG_8572.jpg", caption: "My favorite place to have a nap" },
+    { src: "photos/20250924_200631.jpg", caption: "Where wine and food is there is corley" },
+    { src: "photos/20250926_111746.jpg", caption: "Our first Zoo trip together you looking at the bald eagle" },
     { src: "photos/20250926_185831.jpg", caption: "Golden hour." },
-    { src: "photos/1495508955154340015.jpeg", caption: "Throwback." }
+    { src: "photos/1495508955154340015.jpeg", caption: "Another photo of you stealing some sun glasses" }
   ]
 };
 // =========================
@@ -400,7 +510,9 @@ const floatingSlideshowsEl = document.getElementById("floatingSlideshows");
 const slideshowsContainer = document.getElementById("slideshowsContainer");
 
 let activeChapterId = null;
-let completedChapters = JSON.parse(localStorage.getItem("lbCompletedChapters") || "[]");
+// Clear any old progress data (one-time reset for fresh start)
+localStorage.removeItem("lbCompletedChapters");
+let completedChapters = [];
 let currentNodeIndex = 0;
 let nodeStates = [];
 let showingMemory = true;
@@ -423,13 +535,9 @@ function initGame() {
   
   renderChapterCards();
   
-  // Auto-select first chapter or first incomplete
-  if (!activeChapterId) {
-    const firstIncomplete = CONTENT.gameChapters.find(ch => !completedChapters.includes(ch.id) && !ch.locked);
-    console.log("First incomplete chapter:", firstIncomplete);
-    if (firstIncomplete) {
-      loadChapter(firstIncomplete.id);
-    }
+  // Auto-load Chapter 1 (always available)
+  if (!activeChapterId || !CONTENT.gameChapters.find(ch => ch.id === activeChapterId)) {
+    loadChapter("chapter1");
   }
 }
 
@@ -502,9 +610,14 @@ function loadChapter(chapterId) {
     renderGameMap();
     showNodeIntro();
   } else {
-    console.log("No nodes in chapter, showing coming soon");
+    console.log("No nodes in chapter, showing intro message");
     if (gameQuestionEl) {
-      gameQuestionEl.innerHTML = `<div class="memoryCard show"><p class="memoryText">Coming soon...</p></div>`;
+      gameQuestionEl.innerHTML = `
+        <div class="memoryCard show">
+          <p class="memoryText" style="white-space: pre-line;">${escapeHtml(chapter.intro)}</p>
+          <button class="primary" id="chapterTextCompleteBtn">Continue to Final Page →</button>
+        </div>
+      `;
     }
     if (gameMapEl) {
       gameMapEl.innerHTML = "";
@@ -1026,6 +1139,14 @@ document.addEventListener("click", (e) => {
     if (gameMapEl) gameMapEl.innerHTML = "";
     if (gameQuestionEl) gameQuestionEl.innerHTML = "";
     renderChapterCards();
+  } else if (e.target.closest("#chapterTextCompleteBtn")) {
+    // Handle text-only chapters (like Chapter 4)
+    if (!completedChapters.includes(activeChapterId)) {
+      completedChapters.push(activeChapterId);
+      localStorage.setItem("lbCompletedChapters", JSON.stringify(completedChapters));
+    }
+    renderChapterCards();
+    showPanel("final");
   } else if (e.target.closest("circle[data-node-idx]")) {
     const idx = parseInt(e.target.closest("circle[data-node-idx]").getAttribute("data-node-idx"), 10);
     if (!isNaN(idx) && idx <= currentNodeIndex) {
@@ -1077,32 +1198,109 @@ CONTENT.photos.forEach((p, idx) => {
 });
 
 /* ================================================
- *  Final Reveal
+ *  Final Reveal - Yes/No Valentine Buttons
  * ================================================ */
 document.getElementById("finalMessage").textContent = CONTENT.finalMessage;
 
-revealBtn.addEventListener("click", () => {
-  revealBox.classList.add("show");
-  revealBox.setAttribute("aria-hidden", "false");
-  popConfetti(28);
-  emitParticles(window.innerWidth / 2, window.innerHeight / 2, 10, "heart");
-});
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+let noButtonEscapeCount = 0;
+
+if (yesBtn) {
+  yesBtn.addEventListener("click", () => {
+    // Hide buttons
+    const valentineButtons = document.getElementById("valentineButtons");
+    if (valentineButtons) {
+      valentineButtons.style.display = "none";
+    }
+    
+    // Show reveal box with message
+    revealBox.classList.add("show");
+    revealBox.setAttribute("aria-hidden", "false");
+    popConfetti(28);
+    emitParticles(window.innerWidth / 2, window.innerHeight / 2, 10, "heart");
+  });
+}
+
+if (noBtn) {
+  function moveNoButton() {
+    noButtonEscapeCount++;
+    
+    // Random position within viewport bounds
+    const maxX = 200; // pixels from center
+    const maxY = 150;
+    
+    const randomX = (Math.random() - 0.5) * maxX * 2;
+    const randomY = (Math.random() - 0.5) * maxY * 2;
+    
+    noBtn.classList.add("escaping");
+    noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    
+    // After many attempts, make it smaller
+    if (noButtonEscapeCount > 5) {
+      noBtn.style.fontSize = "16px";
+      noBtn.style.padding = "14px 28px";
+    }
+    if (noButtonEscapeCount > 10) {
+      noBtn.style.fontSize = "14px";
+      noBtn.style.padding = "12px 24px";
+    }
+  }
+  
+  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  });
+}
 
 /* ================================================
  *  Restart
  * ================================================ */
 document.getElementById("restartBtn").addEventListener("click", () => {
+  // Clear all progress
+  completedChapters = [];
+  localStorage.removeItem("lbCompletedChapters");
+  
+  // Reset chapter state
+  activeChapterId = null;
+  currentNodeIndex = 0;
+  nodeStates = [];
+  
+  // Hide reveal box and reset valentine buttons
   revealBox.classList.remove("show");
   revealBox.setAttribute("aria-hidden", "true");
+  const valentineButtons = document.getElementById("valentineButtons");
+  if (valentineButtons) {
+    valentineButtons.style.display = "flex";
+  }
+  
+  // Reset No button state
+  if (noBtn) {
+    noBtn.classList.remove("escaping");
+    noBtn.style.transform = "";
+    noBtn.style.fontSize = "";
+    noBtn.style.padding = "";
+  }
+  noButtonEscapeCount = 0;
+  
+  // Stop any active slideshows
   stopFloatingSlideshows();
+  
+  // Reinitialize game (will lock all chapters except Chapter 1)
   initGame();
+  
+  // Go back to cover
   showPanel("cover");
 });
 
 /* ================================================
- *  Confetti Button
+ *  Confetti Button (if exists)
  * ================================================ */
-document.getElementById("confettiBtn").addEventListener("click", () => popConfetti(24));
+const confettiBtn = document.getElementById("confettiBtn");
+if (confettiBtn) {
+  confettiBtn.addEventListener("click", () => popConfetti(24));
+}
 
 /* ================================================
  *  Lightbox
@@ -1296,7 +1494,7 @@ function tick() {
  *  - Autoplay is OFF. The user must click Play first
  *    (required by iOS / Safari policy).
  * ================================================ */
-const audio = new Audio("music/song.mp3");
+const audio = new Audio("music/Hey Lady.mp3");
 audio.loop    = true;
 audio.volume  = parseFloat(localStorage.getItem("lbVolume") || "0.35");
 audio.preload = "auto";

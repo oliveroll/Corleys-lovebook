@@ -36,32 +36,27 @@
 
     <!-- COVER -->
     <section id="cover" class="panel active panel-visible" aria-label="Cover page">
-      <div class="card hero">
-        <div class="heroLeft">
-          <h1>Happy Valentine's Day, Corley ❤️</h1>
-          <p class="sub">
-            I made you a little love book. Offline. Just for you.
-          </p>
-          <div class="actions">
-            <button class="primary" data-next="intro">Open the book &rarr;</button>
-            <button class="ghost" id="confettiBtn">tiny confetti &#10024;</button>
-          </div>
-          <p class="hint">Tip: journey through our story in Chapters!</p>
-        </div>
-        <div class="heroRight">
-          <img class="coverImg" src="photos/cover.jpg" alt="Cover photo">
+      <div class="landingPage">
+        <div class="floatingHearts" aria-hidden="true"></div>
+        <div class="landingContent">
+          <h1 class="landingTitle">Happy Valentine, Corley ❤️</h1>
+          <p class="landingSubtitle">You're the best thing that ever happened to me!</p>
+          <p class="landingHint">ps. press the music button on the top</p>
+          <button class="primaryLarge landingButton" data-next="intro">Open the book &rarr;</button>
         </div>
       </div>
     </section>
 
     <!-- INTRO -->
     <section id="intro" class="panel" aria-label="Introduction">
-      <div class="card">
-        <h2>Introduction</h2>
-        <p class="letter" id="introLetter"></p>
-        <div class="actions">
-          <button class="ghost" data-prev="cover">&larr; Back</button>
-          <button class="primary" data-next="chapters">Chapter 1 &rarr;</button>
+      <div class="introHero">
+        <div class="introContent">
+          <h2 class="introTitle">Introduction</h2>
+          <p class="introLetter" id="introLetter"></p>
+          <div class="introActions">
+            <button class="ghostLarge" data-prev="cover">&larr; Back</button>
+            <button class="primaryLarge" data-next="chapters">Chapter 1 &rarr;</button>
+          </div>
         </div>
       </div>
     </section>
@@ -120,20 +115,23 @@
 
     <!-- FINAL -->
     <section id="final" class="panel" aria-label="Final message">
-      <div class="card finalCard">
-        <h2>One last thing&hellip;</h2>
-        <p class="big">Will you be my Valentine? ❤️</p>
-
-        <button class="primary" id="revealBtn">Reveal message</button>
-
-        <div class="revealBox" id="revealBox" aria-hidden="true">
-          <p id="finalMessage"></p>
-          <p class="small muted">P.S. This stays on your USB forever :)</p>
-        </div>
-
-        <div class="actions">
-          <button class="ghost" data-prev="gallery">&larr; Back</button>
-          <button class="ghost" id="restartBtn">Restart &#8634;</button>
+      <div class="finalLanding">
+        <div class="floatingHearts" aria-hidden="true"></div>
+        <div class="finalContent">
+          <h1 class="finalTitle">One Last Thing... ❤️</h1>
+          <p class="finalQuestion">Will you be my Valentine?</p>
+          <div class="valentineButtons" id="valentineButtons">
+            <button class="primaryLarge yesButton" id="yesBtn">Yes! ❤️</button>
+            <button class="ghostLarge noButton" id="noBtn">No</button>
+          </div>
+          <div class="finalRevealBox" id="revealBox" aria-hidden="true">
+            <p class="finalMessage" id="finalMessage"></p>
+            <p class="finalPS">P.S. This stays on your USB forever :)</p>
+          </div>
+          <div class="finalActions">
+            <button class="ghostLarge" data-prev="gallery">&larr; Back</button>
+            <button class="ghostLarge" id="restartBtn">Restart &#8634;</button>
+          </div>
         </div>
       </div>
     </section>
