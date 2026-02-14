@@ -27,6 +27,7 @@
         <button class="navBtn" data-go="intro">Intro</button>
         <button class="navBtn" data-go="chapters">Chapters</button>
         <button class="navBtn" data-go="gallery">Gallery</button>
+        <button class="navBtn" data-go="wouldyourather">Would You Rather</button>
         <button class="navBtn" data-go="final">Final</button>
       </nav>
     </div>
@@ -108,7 +109,75 @@
 
         <div class="actions">
           <button class="ghost" data-prev="chapters">&larr; Back</button>
-          <button class="primary" data-next="final">Final page &rarr;</button>
+          <button class="primary" data-next="wouldyourather">Would You Rather &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WOULD YOU RATHER GAME -->
+    <section id="wouldyourather" class="panel" aria-label="Would You Rather game">
+      <div class="wyrContainer">
+        <!-- LEFT: SCORE CARD -->
+        <div class="card wyrScoreCard">
+          <h2>Would You Rather?</h2>
+          <p class="muted">How well do you know each other?</p>
+          
+          <div class="wyrScoreDisplay">
+            <div class="wyrScoreNumber" id="wyrScore">0</div>
+            <div class="wyrScoreLabel">Matches</div>
+          </div>
+          
+          <div class="wyrProgress">
+            <span id="wyrProgressText">Question 1 of 8</span>
+            <div class="wyrProgressBar">
+              <div class="wyrProgressFill" id="wyrProgressFill"></div>
+            </div>
+          </div>
+          
+          <div class="wyrInfo">
+            <p class="wyrInfoText">Answer as Corley. See if you can match Oliver's preferences!</p>
+          </div>
+          
+          <div class="wyrNavActions">
+            <button class="ghost" data-prev="gallery">&larr; Back</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: QUESTION CARD -->
+        <div class="card wyrQuestionCard">
+          <div class="wyrQuestionArea" id="wyrQuestionArea">
+            <h3 class="wyrQuestion" id="wyrQuestionText">Loading...</h3>
+            
+            <div class="wyrOptions" id="wyrOptions">
+              <button class="wyrOption wyrOptionA" id="wyrOptionA" aria-label="Option A">
+                <span class="wyrOptionLabel">A</span>
+                <span class="wyrOptionText" id="wyrOptionAText">Option A</span>
+              </button>
+              
+              <button class="wyrOption wyrOptionB" id="wyrOptionB" aria-label="Option B">
+                <span class="wyrOptionLabel">B</span>
+                <span class="wyrOptionText" id="wyrOptionBText">Option B</span>
+              </button>
+            </div>
+            
+            <div class="wyrFeedback" id="wyrFeedback" aria-live="polite"></div>
+          </div>
+          
+          <!-- Results Display (hidden initially) -->
+          <div class="wyrResults" id="wyrResults" aria-hidden="true">
+            <div class="wyrResultsContent">
+              <h3 class="wyrResultsTitle">Game Complete!</h3>
+              <div class="wyrFinalScore">
+                <span class="wyrFinalScoreNumber" id="wyrFinalScore">0</span>
+                <span class="wyrFinalScoreLabel">out of 8 matches</span>
+              </div>
+              <p class="wyrResultsMessage" id="wyrResultsMessage">Great job!</p>
+              <div class="wyrResultsActions">
+                <button class="primary" id="wyrPlayAgain">Play Again</button>
+                <button class="ghost" data-next="final">Continue to Final &rarr;</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

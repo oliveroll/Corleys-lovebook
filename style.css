@@ -1391,6 +1391,393 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   flex-wrap: wrap;
 }
 
+/* ===== WOULD YOU RATHER GAME ===== */
+.wyrContainer {
+  display: flex;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: calc(100vh - 120px);
+}
+
+.wyrScoreCard {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  max-height: calc(100vh - 140px);
+}
+
+.wyrScoreCard h2 {
+  margin: 0 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.wyrScoreDisplay {
+  text-align: center;
+  padding: 32px 20px;
+  background: linear-gradient(135deg, rgba(255,105,180,0.1), rgba(120,190,255,0.1));
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.wyrScoreNumber {
+  font-size: 72px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.wyrScoreNumber.scoreUp {
+  animation: scoreUp 0.6s ease;
+}
+
+.wyrScoreLabel {
+  display: block;
+  margin-top: 12px;
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.wyrProgress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wyrProgressBar {
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wyrProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+.wyrInfo {
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.wyrInfoText {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.wyrNavActions {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.wyrQuestionCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px;
+  position: relative;
+}
+
+.wyrQuestionArea {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  transition: opacity 0.3s ease;
+}
+
+.wyrQuestion {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  color: var(--text);
+  line-height: 1.3;
+  animation: fadeSlideIn 0.5s ease;
+}
+
+.wyrOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.wyrOption {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 32px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  min-height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wyrOption::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.wyrOption:hover:not(.disabled) {
+  transform: translateY(-4px);
+  border-color: var(--accent1);
+  box-shadow: 0 12px 40px rgba(255,105,180,0.25);
+}
+
+.wyrOption:hover:not(.disabled)::before {
+  opacity: 0.1;
+}
+
+.wyrOption:active:not(.disabled) {
+  transform: translateY(-2px);
+}
+
+.wyrOptionLabel {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 700;
+  background: var(--card2);
+  border: 2px solid var(--border);
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.wyrOptionText {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.wyrOptionA:hover:not(.disabled) .wyrOptionLabel {
+  background: var(--accent1);
+  border-color: var(--accent1);
+  color: white;
+}
+
+.wyrOptionB:hover:not(.disabled) .wyrOptionLabel {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  color: white;
+}
+
+.wyrOption.selected {
+  animation: pulse 0.5s ease;
+}
+
+.wyrOption.match {
+  border-color: #4ade80;
+  background: linear-gradient(135deg, rgba(74,222,128,0.15), rgba(34,197,94,0.1));
+  box-shadow: 0 12px 40px rgba(74,222,128,0.3);
+}
+
+.wyrOption.match .wyrOptionLabel {
+  background: #4ade80;
+  border-color: #4ade80;
+  color: white;
+  animation: celebration 0.6s ease;
+}
+
+.wyrOption.noMatch {
+  animation: shake 0.4s ease;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.wyrOption.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.wyrFeedback {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  min-height: 30px;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.wyrFeedbackMatch {
+  color: #4ade80;
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.wyrFeedbackNoMatch {
+  color: var(--muted);
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.wyrResults {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.wyrResults.show {
+  display: flex;
+  opacity: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.wyrResultsContent {
+  text-align: center;
+  max-width: 500px;
+  animation: fadeSlideIn 0.6s ease;
+}
+
+.wyrResultsTitle {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0 0 32px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.wyrFinalScore {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 32px;
+  background: linear-gradient(135deg, rgba(255,105,180,0.1), rgba(120,190,255,0.1));
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.wyrFinalScoreNumber {
+  font-size: 80px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.wyrFinalScoreLabel {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.wyrResultsMessage {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+
+.wyrResultsActions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Would You Rather Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes celebration {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.2) rotate(-10deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(10deg);
+  }
+}
+
+@keyframes scoreUp {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
 /* ===== FINAL PAGE (Landing Style) ===== */
 .finalLanding {
   position: relative;
@@ -1663,6 +2050,38 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   .introContent { padding: 48px 36px; }
   .introTitle { font-size: 40px; }
   .introLetter { font-size: 19px; }
+  
+  /* Would You Rather responsive */
+  .wyrContainer {
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 16px;
+  }
+  
+  .wyrScoreCard {
+    flex: 1;
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+  
+  .wyrQuestion {
+    font-size: 26px;
+  }
+  
+  .wyrOption {
+    padding: 20px 24px;
+    font-size: 18px;
+    min-height: 80px;
+  }
+  
+  .wyrResultsTitle {
+    font-size: 36px;
+  }
+  
+  .wyrFinalScoreNumber {
+    font-size: 64px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1717,6 +2136,50 @@ h3 { margin: 0 0 6px; font-size: 16px; }
   .mapSvg { width: 140px; }
   .topbar { padding: 10px 12px; }
   .volumeSlider { width: 40px; }
+  
+  /* Would You Rather mobile */
+  .wyrQuestion {
+    font-size: 22px;
+  }
+  
+  .wyrOption {
+    padding: 18px 20px;
+    font-size: 16px;
+    min-height: 70px;
+    gap: 16px;
+  }
+  
+  .wyrOptionLabel {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+  
+  .wyrResultsTitle {
+    font-size: 32px;
+  }
+  
+  .wyrFinalScoreNumber {
+    font-size: 56px;
+  }
+  
+  .wyrResultsMessage {
+    font-size: 18px;
+  }
+  
+  .wyrResultsActions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .wyrResultsActions button {
+    width: 100%;
+  }
+  
+  .wyrScoreNumber {
+    font-size: 56px;
+  }
 }
 
 /* ===== REDUCED MOTION ===== */

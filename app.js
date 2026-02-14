@@ -327,6 +327,67 @@ I love you — genuinely.
 And I'm grateful I get to do life with you.
 
 Happy Valentine's Day ❤️`,
+  // Would You Rather Game Questions
+  wouldYouRather: {
+    questions: [
+      {
+        id: "wyr1",
+        question: "When we have a disagreement, would you rather...",
+        optionA: "Talk it through immediately, even if emotions are high",
+        optionB: "Take time to cool down first, then discuss calmly",
+        oliverAnswer: "B"
+      },
+      {
+        id: "wyr2",
+        question: "When thinking about our future together, would you rather...",
+        optionA: "Build a stable, predictable life with security",
+        optionB: "Take risks and chase big dreams, even with uncertainty",
+        oliverAnswer: "A"
+      },
+      {
+        id: "wyr3",
+        question: "When you're going through a tough time, would you rather I...",
+        optionA: "Give you space and let you process alone",
+        optionB: "Stay close and offer comfort and presence",
+        oliverAnswer: "B"
+      },
+      {
+        id: "wyr4",
+        question: "For quality time together, would you rather...",
+        optionA: "Deep conversations about life, faith, and dreams",
+        optionB: "Shared experiences and making memories together",
+        oliverAnswer: "B"
+      },
+      {
+        id: "wyr5",
+        question: "In our relationship, would you rather I...",
+        optionA: "Challenge you to grow and step outside your comfort zone",
+        optionB: "Provide comfort and acceptance exactly as you are",
+        oliverAnswer: "A"
+      },
+      {
+        id: "wyr6",
+        question: "When making big life decisions together, would you rather...",
+        optionA: "Pray together first and seek God's direction",
+        optionB: "Discuss our thoughts first, then bring it to prayer",
+        oliverAnswer: "B"
+      },
+      {
+        id: "wyr7",
+        question: "When thinking about building our life together, would you rather...",
+        optionA: "Live close to family and maintain strong roots",
+        optionB: "Create our own path, even if it means distance from family",
+        oliverAnswer: "A"
+      },
+      {
+        id: "wyr8",
+        question: "To feel most connected to me, would you rather...",
+        optionA: "Share your deepest fears and insecurities with me",
+        optionB: "Create joyful moments and celebrate wins together",
+        oliverAnswer: "B"
+      }
+    ]
+  },
   // List your photos here (must exist in /photos)
   photos: [
     { src: "photos/IMG_2748.jpg", caption: "Us. Just us. Our first tour in westlafayette together experience the restaurant and winerys" },
@@ -367,7 +428,7 @@ Happy Valentine's Day ❤️`,
  *  Preferences
  * ================================================ */
 const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const PANEL_ORDER = ["cover", "intro", "chapters", "gallery", "final"];
+const PANEL_ORDER = ["cover", "intro", "chapters", "gallery", "wouldyourather", "final"];
 const cacheBust = "?v=7";
 
 /* ================================================
@@ -1196,6 +1257,210 @@ CONTENT.photos.forEach((p, idx) => {
   });
   photoGrid.appendChild(div);
 });
+
+/* ================================================
+ *  Would You Rather Game
+ * ================================================ */
+const wyrState = {
+  currentQuestionIndex: 0,
+  player1Answer: null,
+  player2Answer: null,
+  score: 0,
+  totalQuestions: CONTENT.wouldYouRather.questions.length,
+  gameComplete: false
+};
+
+// DOM Elements
+const wyrQuestionText = document.getElementById("wyrQuestionText");
+const wyrOptionA = document.getElementById("wyrOptionA");
+const wyrOptionB = document.getElementById("wyrOptionB");
+const wyrOptionAText = document.getElementById("wyrOptionAText");
+const wyrOptionBText = document.getElementById("wyrOptionBText");
+const wyrScore = document.getElementById("wyrScore");
+const wyrProgressText = document.getElementById("wyrProgressText");
+const wyrProgressFill = document.getElementById("wyrProgressFill");
+const wyrFeedback = document.getElementById("wyrFeedback");
+const wyrResults = document.getElementById("wyrResults");
+const wyrQuestionArea = document.getElementById("wyrQuestionArea");
+const wyrFinalScore = document.getElementById("wyrFinalScore");
+const wyrResultsMessage = document.getElementById("wyrResultsMessage");
+const wyrPlayAgain = document.getElementById("wyrPlayAgain");
+
+function initWouldYouRather() {
+  console.log("Would You Rather: Initializing game");
+  resetWYRGame();
+  renderWYRQuestion();
+}
+
+function resetWYRGame() {
+  wyrState.currentQuestionIndex = 0;
+  wyrState.player1Answer = null;
+  wyrState.player2Answer = null;
+  wyrState.score = 0;
+  wyrState.gameComplete = false;
+  
+  wyrScore.textContent = "0";
+  wyrFeedback.textContent = "";
+  wyrResults.classList.remove("show");
+  wyrResults.setAttribute("aria-hidden", "true");
+  wyrQuestionArea.style.display = "block";
+  
+  // Reset button states
+  wyrOptionA.classList.remove("selected", "match", "noMatch", "disabled");
+  wyrOptionB.classList.remove("selected", "match", "noMatch", "disabled");
+}
+
+function renderWYRQuestion() {
+  if (wyrState.currentQuestionIndex >= wyrState.totalQuestions) {
+    showWYRResults();
+    return;
+  }
+  
+  const question = CONTENT.wouldYouRather.questions[wyrState.currentQuestionIndex];
+  
+  // Reset answers for new question
+  wyrState.player1Answer = null;
+  wyrState.player2Answer = null;
+  
+  // Update question text with fade effect
+  wyrQuestionArea.style.opacity = "0";
+  
+  setTimeout(() => {
+    wyrQuestionText.textContent = question.question;
+    wyrOptionAText.textContent = question.optionA;
+    wyrOptionBText.textContent = question.optionB;
+    
+    // Reset button states
+    wyrOptionA.classList.remove("selected", "match", "noMatch", "disabled");
+    wyrOptionB.classList.remove("selected", "match", "noMatch", "disabled");
+    wyrFeedback.textContent = "";
+    
+    // Update progress
+    wyrProgressText.textContent = `Question ${wyrState.currentQuestionIndex + 1} of ${wyrState.totalQuestions}`;
+    const progress = ((wyrState.currentQuestionIndex + 1) / wyrState.totalQuestions) * 100;
+    wyrProgressFill.style.width = progress + "%";
+    
+    // Fade in
+    wyrQuestionArea.style.opacity = "1";
+  }, 300);
+}
+
+function handleWYRAnswer(choice) {
+  // Corley's answer compared to Oliver's preference
+  const question = CONTENT.wouldYouRather.questions[wyrState.currentQuestionIndex];
+  const selectedButton = choice === "A" ? wyrOptionA : wyrOptionB;
+  const otherButton = choice === "A" ? wyrOptionB : wyrOptionA;
+  
+  // Disable buttons temporarily
+  wyrOptionA.classList.add("disabled");
+  wyrOptionB.classList.add("disabled");
+  
+  // Mark as selected with animation
+  selectedButton.classList.add("selected");
+  
+  // Check if Corley's answer matches Oliver's preference
+  const isMatch = (choice === question.oliverAnswer);
+  
+  setTimeout(() => {
+    if (isMatch) {
+      // Match! Corley chose the same as Oliver
+      wyrState.score++;
+      wyrScore.textContent = wyrState.score;
+      
+      selectedButton.classList.add("match");
+      wyrFeedback.textContent = "✨ It's a match! You know Oliver so well! +1";
+      wyrFeedback.className = "wyrFeedback wyrFeedbackMatch";
+      
+      // Animate score
+      wyrScore.classList.add("scoreUp");
+      setTimeout(() => wyrScore.classList.remove("scoreUp"), 600);
+      
+      // Hearts particles
+      const rect = selectedButton.getBoundingClientRect();
+      emitParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 5, "heart");
+    } else {
+      // No match - Corley chose differently than Oliver
+      selectedButton.classList.add("noMatch");
+      wyrFeedback.textContent = "Not quite... Oliver chose the other one!";
+      wyrFeedback.className = "wyrFeedback wyrFeedbackNoMatch";
+    }
+    
+    // Move to next question after delay
+    setTimeout(() => {
+      wyrState.currentQuestionIndex++;
+      renderWYRQuestion();
+    }, 2000);
+  }, 500);
+}
+
+function showWYRResults() {
+  wyrState.gameComplete = true;
+  wyrQuestionArea.style.display = "none";
+  wyrResults.classList.add("show");
+  wyrResults.setAttribute("aria-hidden", "false");
+  
+  wyrFinalScore.textContent = wyrState.score;
+  
+  // Generate message based on score
+  const percentage = (wyrState.score / wyrState.totalQuestions) * 100;
+  let message = "";
+  
+  if (percentage === 100) {
+    message = "Perfect match! You know Oliver's heart completely! 💕";
+  } else if (percentage >= 75) {
+    message = "Amazing! You understand each other so deeply! 💖";
+  } else if (percentage >= 50) {
+    message = "Great job! You're learning what matters most to each other! 💗";
+  } else if (percentage >= 25) {
+    message = "Good start! Keep discovering each other's hearts! 💓";
+  } else {
+    message = "Every answer teaches you something new about each other! 💝";
+  }
+  
+  wyrResultsMessage.textContent = message;
+  
+  // Celebration confetti
+  if (wyrState.score > 0) {
+    popConfetti(15);
+  }
+}
+
+// Event listeners
+if (wyrOptionA) {
+  wyrOptionA.addEventListener("click", () => {
+    if (!wyrOptionA.classList.contains("disabled")) {
+      handleWYRAnswer("A");
+    }
+  });
+}
+
+if (wyrOptionB) {
+  wyrOptionB.addEventListener("click", () => {
+    if (!wyrOptionB.classList.contains("disabled")) {
+      handleWYRAnswer("B");
+    }
+  });
+}
+
+if (wyrPlayAgain) {
+  wyrPlayAgain.addEventListener("click", () => {
+    initWouldYouRather();
+  });
+}
+
+// Initialize when entering the panel
+const wyrPanel = document.getElementById("wouldyourather");
+if (wyrPanel) {
+  // We'll initialize on first visit
+  let wyrInitialized = false;
+  const observer = new MutationObserver(() => {
+    if (wyrPanel.classList.contains("active") && !wyrInitialized) {
+      wyrInitialized = true;
+      initWouldYouRather();
+    }
+  });
+  observer.observe(wyrPanel, { attributes: true, attributeFilter: ["class"] });
+}
 
 /* ================================================
  *  Final Reveal - Yes/No Valentine Buttons
